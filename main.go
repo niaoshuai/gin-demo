@@ -1,6 +1,9 @@
 package main
 
-import "github.com/gin-gonic/gin"
+import (
+	"github.com/gin-gonic/gin"
+	"os"
+)
 
 func main() {
 	r := gin.Default()
@@ -9,5 +12,13 @@ func main() {
 			"message": "pong",
 		})
 	})
-	r.Run(":8888") // listen and serve on 0.0.0.0:8080
+	r.Run(getEnvDefault("PORT", ":80")) // listen and serve on 0.0.0.0:8080
+}
+
+func getEnvDefault(key, defVal string) string {
+	val, ex := os.LookupEnv(key)
+	if !ex {
+		return defVal
+	}
+	return val
 }
